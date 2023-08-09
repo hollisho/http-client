@@ -15,6 +15,16 @@ class BaseClient
     protected $guzzleHandler;
 
     /**
+     * BaseClient constructor.
+     * @param string $baseUri
+     */
+    public function __construct(string $baseUri)
+    {
+        $this->baseUri = $baseUri;
+    }
+
+
+    /**
      * GET request.
      * @param string $url
      * @param array $query
