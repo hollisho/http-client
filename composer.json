@@ -1,0 +1,29 @@
+{
+  "name": "hollisho/http-client",
+  "type": "library",
+  "description": "http-client",
+  "keywords": [
+    "laravel",
+    "lumen",
+    "http",
+    "client"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hollis Ho",
+      "email": "he_wenzhi@126.com",
+      "homepage": "https://www.1024plus.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "~7.2",
+    "guzzlehttp/guzzle": "^7.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "hollisho\\httpclient\\": "src"
+    }
+  }
+}
