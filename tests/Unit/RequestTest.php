@@ -1,8 +1,8 @@
 <?php
-namespace hollisho\httpclient\tests\Unit;
+namespace hollisho\httpclientTests\Unit;
 
-use hollisho\httpclient\tests\Client\HttpClient;
-use hollisho\httpclient\tests\Middleware\AuthRequest;
+use hollisho\httpclientTests\Client\HttpClient;
+use hollisho\httpclientTests\Middleware\AuthRequest;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
@@ -11,7 +11,7 @@ class RequestTest extends TestCase
     {
         $httpClient = new HttpClient('https://www.1024plus.com');
         $httpClient->pushMiddleware(new AuthRequest());
-        $httpClient->httpPost('/test');
+        $httpClient->httpPost('/category/springboot/');
         $this->assertTrue(true);
     }
 }

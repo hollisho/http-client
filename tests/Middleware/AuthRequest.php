@@ -1,5 +1,5 @@
 <?php
-namespace hollisho\httpclient\tests\Middleware;
+namespace hollisho\httpclientTests\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 

@@ -1,5 +1,5 @@
 <?php
-namespace hollisho\httpclient\tests\Client;
+namespace hollisho\httpclientTests\Client;
 
 use hollisho\httpclient\BaseClient;
 

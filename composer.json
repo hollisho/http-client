@@ -28,7 +28,7 @@
   "autoload": {
     "psr-4": {
       "hollisho\\httpclient\\": "src",
-      "hollisho\\httpclient\\tests\\": "tests"
+      "hollisho\\httpclientTests\\": "tests"
     }
   }
 }
