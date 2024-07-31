@@ -27,8 +27,18 @@
   },
   "autoload": {
     "psr-4": {
-      "hollisho\\httpclient\\": "src",
-      "hollisho\\httpclientTests\\": "tests"
-    }
+      "hollisho\\httpclient\\": "src/"
+    },
+    "exclude-from-classmap": [
+      "/tests/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "hollisho\\httpclientTests\\": "tests/"
+    },
+    "exclude-from-classmap": [
+      "/tests/"
+    ]
   }
 }
