@@ -5,7 +5,7 @@ namespace hollisho\httpclient;
 
 class BaseClient
 {
-    use HasHttpRequests { request as performRequest; }
+    use HasHttpRequests;
 
     /**
      * @var string
