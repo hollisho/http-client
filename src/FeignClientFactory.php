@@ -2,23 +2,29 @@
 
 namespace hollisho\httpclient;
 
-class FeignFactory
+/**
+ * @author Hollis
+ * @desc
+ * Class FeignClientFactory
+ * @package hollisho\httpclient
+ */
+class FeignClientFactory
 {
     public static function create($interface)
     {
         return new class($interface) {
-            private $feignClient;
+            private $feignProxy;
             private $interface;
 
             public function __construct($interface)
             {
-                $this->feignClient = new FeignClient('');
+                $this->feignProxy = new FeignProxy();
                 $this->interface = $interface;
             }
 
             public function __call($name, $arguments)
             {
-                return $this->feignClient->call($this->interface, $name, $arguments);
+                return $this->feignProxy->call($this->interface, $name, $arguments);
             }
         };
     }
