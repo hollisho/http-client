@@ -1,12 +1,10 @@
 ## Install
 
-Via Composer
-
 ``` bash
 $ composer require hollisho/http-client
 ```
 
-## 单元测试
+## TestCase
 
 1. 执行指定目录所有用例
 

@@ -3,9 +3,13 @@
 namespace hollisho\httpclient;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
+use Psr\Http\Message\ResponseInterface;
+
 class BaseClient
 {
-    use HasHttpRequests { request as performRequest; }
+    use HasHttpRequests;
 
     /**
      * @var string
@@ -18,7 +22,7 @@ class BaseClient
      * BaseClient constructor.
      * @param string $baseUri
      */
-    public function __construct(string $baseUri)
+    public function __construct(string $baseUri = null)
     {
         $this->baseUri = $baseUri;
     }
@@ -28,24 +32,24 @@ class BaseClient
      * GET request.
      * @param string $url
      * @param array $query
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function httpGet(string $url, array $query = [])
     {
-        return $this->request($url, 'GET', ['query' => $query]);
+        return $this->request($url, 'GET', [RequestOptions::QUERY => $query]);
     }
 
     /**
      * POST request.
      * @param string $url
      * @param array $data
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function httpPost(string $url, array $data = [])
     {
-        return $this->request($url, 'POST', ['form_params' => $data]);
+        return $this->request($url, 'POST', [RequestOptions::FORM_PARAMS => $data]);
     }
 
     /**
@@ -53,12 +57,12 @@ class BaseClient
      * @param string $url
      * @param array $data
      * @param array $query
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function httpPostJson(string $url, array $data = [], array $query = [])
     {
-        return $this->request($url, 'POST', ['query' => $query, 'json' => $data]);
+        return $this->request($url, 'POST', [RequestOptions::QUERY => $query, RequestOptions::JSON => $data]);
     }
 
     /**
@@ -67,8 +71,8 @@ class BaseClient
      * @param array $files
      * @param array $form
      * @param array $query
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function httpUpload(string $url, array $files = [], array $form = [], array $query = [])
     {
@@ -85,6 +89,12 @@ class BaseClient
             $multipart[] = compact('name', 'contents');
         }
 
-        return $this->request($url, 'POST', ['query' => $query, 'multipart' => $multipart, 'connect_timeout' => 30, 'timeout' => 30, 'read_timeout' => 30]);
+        return $this->request($url, 'POST', [
+            RequestOptions::QUERY => $query,
+            RequestOptions::MULTIPART => $multipart,
+            RequestOptions::CONNECT_TIMEOUT => 30,
+            RequestOptions::TIMEOUT => 30,
+            RequestOptions::READ_TIMEOUT => 30
+        ]);
     }
 }

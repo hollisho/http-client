@@ -4,14 +4,16 @@ namespace hollisho\httpclient;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Utils;
 use Psr\Http\Message\ResponseInterface;
 
 trait HasHttpRequests
 {
 
     /**
-     * @var \GuzzleHttp\ClientInterface
+     * @var ClientInterface
      */
     protected $httpClient;
 
@@ -21,7 +23,7 @@ trait HasHttpRequests
     protected $middlewares = [];
 
     /**
-     * @var \GuzzleHttp\HandlerStack
+     * @var HandlerStack
      */
     protected $handlerStack;
 
@@ -57,7 +59,7 @@ trait HasHttpRequests
     /**
      * Set GuzzleHttp\Client.
      *
-     * @param \GuzzleHttp\ClientInterface $httpClient
+     * @param ClientInterface $httpClient
      *
      * @return $this
      */
@@ -76,7 +78,8 @@ trait HasHttpRequests
     public function getHttpClient(): ClientInterface
     {
         if (!($this->httpClient instanceof ClientInterface)) {
-            $this->httpClient = $this->httpClient ? $this->httpClient : new Client(['handler' => HandlerStack::create($this->getGuzzleHandler())]);
+            $config = array_merge(self::getDefaultOptions(), ['handler' => HandlerStack::create($this->getGuzzleHandler())]);
+            $this->httpClient = $this->httpClient ?: new Client($config);
         }
 
         return $this->httpClient;
@@ -118,9 +121,9 @@ trait HasHttpRequests
      * @param string $method
      * @param array  $options
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function request($url, $method = 'GET', $options = []): ResponseInterface
     {
@@ -141,7 +144,7 @@ trait HasHttpRequests
     }
 
     /**
-     * @param \GuzzleHttp\HandlerStack $handlerStack
+     * @param HandlerStack $handlerStack
      *
      * @return $this
      */
@@ -155,7 +158,7 @@ trait HasHttpRequests
     /**
      * Build a handler stack.
      *
-     * @return \GuzzleHttp\HandlerStack
+     * @return HandlerStack
      */
     public function getHandlerStack(): HandlerStack
     {
@@ -207,6 +210,6 @@ trait HasHttpRequests
                         : $handler;
         }
 
-        return \GuzzleHttp\choose_handler();
+        return Utils::chooseHandler();
     }
 }
