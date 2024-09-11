@@ -30,7 +30,15 @@ $ ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --filter RequestT
 $ ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --filter RequestTest::test
 ```
 
-## use annotation
+## Basic Use
+```php
+$httpClient = new BaseClient('https://www.1024plus.com');
+$httpClient->pushMiddleware(new AuthRequest());
+$httpClient->httpPost('/category/springboot/');
+```
+
+
+## Use Annotation
 ```php
 /**
  * @author Hollis
