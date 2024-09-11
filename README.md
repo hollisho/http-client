@@ -29,3 +29,44 @@ $ ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --filter RequestT
 ```sh
 $ ./vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --filter RequestTest::test
 ```
+
+## use annotation
+```php
+/**
+ * @author Hollis
+ * Interface UserService
+ *
+ * @BaseUrl(host="https://www.1024plus.com/")
+ *
+ * @package hollisho\httpclientTests\Service
+ */
+interface UserService
+{
+    /**
+     * @Headers(headers={
+     *     @AuthBasic(username="override", password="override"),
+     *     @CustomHeader(name="x-override", body="test")
+     * })
+     *
+     * @Action(
+     *     method=@Get,
+     *     endpoint=@Endpoint(uri="/api/entry/{id}")
+     * )
+     */
+    public function getUser($id);
+
+    /**
+     * @Action(
+     *     method=@Post,
+     *     endpoint=@Endpoint(uri="/resource"),
+     *     body=@Body(json=true, name="body")
+     * )
+     */
+    public function createUser($data);
+}
+
+
+// 生成 FeignClient 实例
+$client = FeignClientFactory::create(UserService::class);
+echo $client->getUser(1);
+```
