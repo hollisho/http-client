@@ -58,13 +58,17 @@ class MethodInterpreter
             $requestHeaders = [];
             $requestParams = [];
 
+            if ($reflectionMethod->getParameters()) {
+                $requestParams = $this->buildParameters($reflectionMethod->getParameters());
+            }
+
             /** @var Action $action */
             $action = array_reduce($this->annotations[$key], function ($carry, $annotation) {
                 return ($annotation instanceof Action) ? $annotation : $carry;
             });
 
             if ($action !== null) {
-                $requestBody = $this->buildRequestBody($action);
+                $requestBody = $this->buildRequestBody($action, $requestParams);
             }
 
             /** @var Headers $headers */
@@ -81,10 +85,6 @@ class MethodInterpreter
                 $requestBody,
                 $requestHeaders
             );
-
-            if ($reflectionMethod->getParameters()) {
-                $requestParams = $this->buildParameters($reflectionMethod->getParameters());
-            }
 
             $methods[] = MethodVo::build([
                 'action' => $action,
@@ -120,26 +120,29 @@ class MethodInterpreter
      * Builds the request body from the action.
      *
      * @param Action $action
+     * @param array $requestParams
      *
      * @return array
      *
      * @throws NoBodyTypeProvidedException
      */
-    private function buildRequestBody(Action $action): array
+    private function buildRequestBody(Action $action, array $requestParams): array
     {
         if (!$action->hasBody()) {
             return [];
         }
 
+        $value = isset($requestParams[$action->getBodyParamName()]) ? $requestParams[$action->getBodyParamName()] : null;
+
         switch ($action->getBodyType()) {
             case BodyConstants::JSON_BODY :
-                $requestOptions['body'] = "\${$action->getBodyParamName()}";
+                $requestOptions['body'] = $value;
                 break;
             case BodyConstants::MULTI_PART_BODY :
-                $requestOptions['multipart'] = "\${$action->getBodyParamName()}";
+                $requestOptions['multipart'] = $value;
                 break;
             case BodyConstants::FORM_PARAMS_BODY :
-                $requestOptions['form_params'] = "\${$action->getBodyParamName()}";
+                $requestOptions['form_params'] = $value;
                 break;
         }
 

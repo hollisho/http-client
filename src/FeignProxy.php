@@ -54,7 +54,9 @@ class FeignProxy
         /** @var MethodVo $methods */
         $methods = $methods ? reset($methods) : [];
 
+        $path = $methods->action->getEndpoint();
         $path = $this->generateUrlFromTemplate($methods->action->getEndpoint(), $methods->requestParams);
+
         $response = $this->client->request(
             $path,
             $methods->action->getMethod(),
@@ -75,8 +77,12 @@ class FeignProxy
     {
         // 遍历参数数组，替换 URL 模板中的占位符
         foreach ($params as $key => $value) {
-            // 使用 str_replace 逐个替换占位符
-            $template = str_replace('$' . $key, $value, $template);
+            if (is_array($value)) foreach ($value as $k => $v) {
+                $template = str_replace('$' . $k, $v, $template);
+            } else {
+                $template = str_replace('$' . $key, $value, $template);
+            }
+
         }
 
         return $template;
