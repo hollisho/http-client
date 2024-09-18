@@ -60,7 +60,7 @@ class FeignProxy
         $methods = $methods ? reset($methods) : [];
 
         $path = $methods->action->getEndpoint();
-        $path = $this->generateUrlFromTemplate($methods->action->getEndpoint(), $methods->requestParams);
+        $path = $this->generateUrlFromTemplate($path, $methods->requestParams);
 
         return $this->client->request(
             $path,
