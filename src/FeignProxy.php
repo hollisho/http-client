@@ -25,9 +25,14 @@ class FeignProxy
 
     private $reader;
 
-    public function __construct()
+    public function __construct($options = [])
     {
         $this->client = new BaseClient();
+
+        if ($options) {
+            $this->client::setDefaultOptions(array_merge($this->client::getDefaultOptions(), $options));
+        }
+
         $this->reader = new AnnotationReader();
     }
 

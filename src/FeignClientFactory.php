@@ -10,15 +10,15 @@ namespace hollisho\httpclient;
  */
 class FeignClientFactory
 {
-    public static function create($interface)
+    public static function create($interface, $options = [])
     {
-        return new class($interface) {
+        return new class($interface, $options) {
             private $feignProxy;
             private $interface;
 
-            public function __construct($interface)
+            public function __construct($interface, $options = [])
             {
-                $this->feignProxy = new FeignProxy();
+                $this->feignProxy = new FeignProxy($options);
                 $this->interface = $interface;
             }
 
