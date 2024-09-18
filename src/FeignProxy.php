@@ -62,12 +62,10 @@ class FeignProxy
         $path = $methods->action->getEndpoint();
         $path = $this->generateUrlFromTemplate($methods->action->getEndpoint(), $methods->requestParams);
 
-        $response = $this->client->request(
+        return $this->client->request(
             $path,
             $methods->action->getMethod(),
             $methods->requestOptions);
-
-        return $response->getBody();
 
     }
 
