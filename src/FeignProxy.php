@@ -57,10 +57,10 @@ class FeignProxy
             ->makeMethods();
 
         /** @var MethodVo $methods */
-        $methods = $methods ? reset($methods) : [];
+        $methods = $methods[$reflectionMethod->getName()];
 
         $path = $methods->action->getEndpoint();
-        $path = $this->generateUrlFromTemplate($path, $methods->requestParams);
+        $path = $this->generateUrlFromTemplate($path, $methods->requestOptions['query']);
 
         return $this->client->request(
             $path,

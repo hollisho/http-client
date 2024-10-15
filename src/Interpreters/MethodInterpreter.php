@@ -68,7 +68,7 @@ class MethodInterpreter
             });
 
             if ($action !== null) {
-                $requestBody = $this->buildRequestBody($action, $requestParams);
+                $requestBody = $this->buildRequestBody($action, $requestParams['query']);
             }
 
             /** @var Headers $headers */
@@ -83,13 +83,13 @@ class MethodInterpreter
             $requestOptions = array_merge(
                 $requestOptions,
                 $requestBody,
-                $requestHeaders
+                $requestHeaders,
+                $requestParams
             );
 
-            $methods[] = MethodVo::build([
+            $methods[$reflectionMethod->getName()] = MethodVo::build([
                 'action' => $action,
-                'requestOptions' => $requestOptions,
-                'requestParams' => $requestParams,
+                'requestOptions' => $requestOptions
             ]);
 
         }
@@ -113,7 +113,8 @@ class MethodInterpreter
             $params[$parameter->getName()] = $this->arguments[$key];
         }
 
-        return $params;
+        $requestOptions['query'] = $params;
+        return $requestOptions;
     }
 
     /**

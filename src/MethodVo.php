@@ -20,6 +20,4 @@ class MethodVo extends HObject
     /** @var array */
     public $requestOptions;
 
-    /** @var array */
-    public $requestParams;
 }
