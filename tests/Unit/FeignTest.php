@@ -1,7 +1,7 @@
 <?php
 namespace hollisho\httpclientTests\Unit;
 
-use hollisho\httpclient\FeignClientFactory;
+use hollisho\httpclient\Feign\FeignClientFactory;
 use hollisho\httpclientTests\Service\UserService;
 use PHPUnit\Framework\TestCase;
 

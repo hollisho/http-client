@@ -1,9 +1,10 @@
 <?php
 
-namespace hollisho\httpclient;
+namespace hollisho\httpclient\Feign;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use GuzzleHttp\Exception\GuzzleException;
+use hollisho\httpclient\BaseClient;
 use hollisho\httpclient\Exceptions\NoBodyTypeProvidedException;
 use hollisho\httpclient\Interpreters\ConfigInterpreter;
 use hollisho\httpclient\Interpreters\MethodInterpreter;
@@ -91,4 +92,14 @@ class FeignProxy
         return $template;
     }
 
+    /**
+     * 设置client参数
+     * @param array $options
+     * @return void
+     * @author Hollis
+     */
+    public function setDefaultOptions(array $options = [])
+    {
+        $this->client::setDefaultOptions(array_merge($this->client::getDefaultOptions(), $options));
+    }
 }
