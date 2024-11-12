@@ -8,6 +8,7 @@ use hollisho\httpclient\BaseClient;
 use hollisho\httpclient\Exceptions\NoBodyTypeProvidedException;
 use hollisho\httpclient\Interpreters\ConfigInterpreter;
 use hollisho\httpclient\Interpreters\MethodInterpreter;
+use hollisho\httpclient\MethodVo;
 use hollisho\objectbuilder\Exceptions\BuilderException;
 use ReflectionClass;
 use ReflectionException;
@@ -31,7 +32,7 @@ class FeignProxy
         $this->client = new BaseClient();
 
         if ($options) {
-            $this->client::setDefaultOptions(array_merge($this->client::getDefaultOptions(), $options));
+            $this->client->setDefaultOptions(array_merge($this->client->getDefaultOptions(), $options));
         }
 
         $this->reader = new AnnotationReader();
@@ -49,7 +50,7 @@ class FeignProxy
         $classAnnotations = $this->reader->getClassAnnotations($reflectionClass);
         $clientConfig = (new ConfigInterpreter($classAnnotations))->makeConfig();
 
-        $this->client::setDefaultOptions(array_merge($this->client::getDefaultOptions(), $clientConfig));
+        $this->client->setDefaultOptions(array_merge($this->client->getDefaultOptions(), $clientConfig));
 
         $reflectionMethod = new ReflectionMethod($object, $method);
         $annotations = $this->reader->getMethodAnnotations($reflectionMethod);

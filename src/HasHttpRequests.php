@@ -30,7 +30,7 @@ trait HasHttpRequests
     /**
      * @var array
      */
-    protected static $defaults = [
+    protected $defaults = [
         'curl' => [
             CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
         ],
@@ -41,9 +41,9 @@ trait HasHttpRequests
      *
      * @param array $defaults
      */
-    public static function setDefaultOptions($defaults = [])
+    public function setDefaultOptions(array $defaults = [])
     {
-        self::$defaults = $defaults;
+        $this->defaults = $defaults;
     }
 
     /**
@@ -51,9 +51,9 @@ trait HasHttpRequests
      *
      * @return array
      */
-    public static function getDefaultOptions(): array
+    public function getDefaultOptions(): array
     {
-        return self::$defaults;
+        return $this->defaults;
     }
 
     /**
@@ -78,7 +78,7 @@ trait HasHttpRequests
     public function getHttpClient(): ClientInterface
     {
         if (!($this->httpClient instanceof ClientInterface)) {
-            $config = array_merge(self::getDefaultOptions(), ['handler' => HandlerStack::create($this->getGuzzleHandler())]);
+            $config = array_merge($this->getDefaultOptions(), ['handler' => HandlerStack::create($this->getGuzzleHandler())]);
             $this->httpClient = $this->httpClient ?: new Client($config);
         }
 
@@ -89,7 +89,7 @@ trait HasHttpRequests
      * Add a middleware.
      *
      * @param callable $middleware
-     * @param string   $name
+     * @param string|null $name
      *
      * @return $this
      */
@@ -129,7 +129,7 @@ trait HasHttpRequests
     {
         $method = strtoupper($method);
 
-        $options = array_merge(self::$defaults, $options, ['handler' => $this->getHandlerStack()]);
+        $options = array_merge($this->defaults, $options, ['handler' => $this->getHandlerStack()]);
 
         $options = $this->fixJsonIssue($options);
 

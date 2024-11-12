@@ -20,7 +20,7 @@ class BaseClient
 
     /**
      * BaseClient constructor.
-     * @param string $baseUri
+     * @param string|null $baseUri
      */
     public function __construct(string $baseUri = null)
     {
