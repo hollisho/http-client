@@ -101,6 +101,6 @@ class FeignProxy
      */
     public function setDefaultOptions(array $options = [])
     {
-        $this->client::setDefaultOptions(array_merge($this->client::getDefaultOptions(), $options));
+        $this->client->setDefaultOptions(array_merge($this->client->getDefaultOptions(), $options));
     }
 }
