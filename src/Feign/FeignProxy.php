@@ -62,7 +62,10 @@ class FeignProxy
         $methods = $methods[$reflectionMethod->getName()];
 
         $path = $methods->action->getEndpoint();
-        $path = $this->generateUrlFromTemplate($path, $methods->requestOptions['query']);
+
+        if (isset($methods->requestOptions['query'])) {
+            $path = $this->generateUrlFromTemplate($path, $methods->requestOptions['query']);
+        }
 
         return $this->client->request(
             $path,

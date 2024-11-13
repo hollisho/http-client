@@ -3,9 +3,11 @@
 namespace hollisho\httpclient\Interpreters;
 
 use hollisho\httpclient\Annotations\Action;
+use hollisho\httpclient\Annotations\Method\Post;
 use hollisho\httpclient\Annotations\Request\Headers;
 use hollisho\httpclient\Constants\BodyConstants;
 use hollisho\httpclient\Constants\ConfigurationConstants;
+use hollisho\httpclient\Constants\MethodConstants;
 use hollisho\httpclient\Exceptions\NoBodyTypeProvidedException;
 use hollisho\httpclient\MethodVo;
 use hollisho\objectbuilder\Exceptions\BuilderException;
@@ -68,7 +70,11 @@ class MethodInterpreter
             });
 
             if ($action !== null) {
-                $requestBody = $this->buildRequestBody($action, $requestParams['query']);
+                if ($action->getMethod() == MethodConstants::HTTP_POST) {
+                    $requestBody = $this->buildRequestBody($action, $requestParams);
+                } else {
+                    $requestOptions['query'] = $requestParams;
+                }
             }
 
             /** @var Headers $headers */
@@ -113,8 +119,7 @@ class MethodInterpreter
             $params[$parameter->getName()] = $this->arguments[$key];
         }
 
-        $requestOptions['query'] = $params;
-        return $requestOptions;
+        return $params;
     }
 
     /**
