@@ -58,10 +58,10 @@ class MethodInterpreter
             $requestOptions = [];
             $requestBody = [];
             $requestHeaders = [];
-            $requestParams = [];
+            $params = [];
 
             if ($reflectionMethod->getParameters()) {
-                $requestParams = $this->buildParameters($reflectionMethod->getParameters());
+                $params = $this->buildParameters($reflectionMethod->getParameters());
             }
 
             /** @var Action $action */
@@ -71,9 +71,9 @@ class MethodInterpreter
 
             if ($action !== null) {
                 if ($action->getMethod() == MethodConstants::HTTP_POST) {
-                    $requestBody = $this->buildRequestBody($action, $requestParams);
+                    $requestBody = $this->buildRequestBody($action, $params);
                 } else {
-                    $requestOptions['query'] = $requestParams;
+                    $requestOptions['query'] = $params;
                 }
             }
 
@@ -89,8 +89,7 @@ class MethodInterpreter
             $requestOptions = array_merge(
                 $requestOptions,
                 $requestBody,
-                $requestHeaders,
-                $requestParams
+                $requestHeaders
             );
 
             $methods[$reflectionMethod->getName()] = MethodVo::build([
