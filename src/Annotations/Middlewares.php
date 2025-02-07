@@ -15,14 +15,14 @@ class Middlewares extends Annotation
     /**
      * @var ConfigurationAnnotationInterface[]
      */
-    public $middlewares;
+    public $value;
 
     /**
      * @return ConfigurationAnnotationInterface[]
      */
     public function getMiddlewares(): array
     {
-        return $this->middlewares;
+        return $this->value;
     }
 
     /**

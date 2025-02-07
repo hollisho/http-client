@@ -20,7 +20,7 @@ use hollisho\httpclientTests\Middleware\AuthRequest;
  * Interface UserService
  *
  * @BaseUrl(host="https://www.1024plus.com/")
- * @Middlewares(middlewares={
+ * @Middlewares({
  *     @Middleware(value=TestMiddleware::class),
  *     @Middleware(value=TestMiddleware::class)
  * })
@@ -49,7 +49,7 @@ interface UserService
      *     body=@Body(json=true, name="body")
      * )
      *
-     * @Middlewares(middlewares={
+     * @Middlewares({
      *     @Middleware(value=TestMiddleware::class),
      *     @Middleware(value=AuthRequest::class)
      * })
