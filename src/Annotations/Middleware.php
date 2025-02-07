@@ -3,32 +3,30 @@
 namespace hollisho\httpclient\Annotations;
 
 use Doctrine\Common\Annotations\Annotation;
-use hollisho\httpclient\Annotations\Request\Contracts\ConfigurationAnnotationInterface;
 use hollisho\httpclient\Constants\ConfigurationConstants;
 
 /**
- * Class ApiName
+ * Class Middleware
  *
  * @Annotation
- * @Annotation\Target({"CLASS"})
+ * @Annotation\Target({"METHOD", "CLASS"})
  *
  * @package hollisho\httpclient\Annotations
  */
-class ApiName extends Annotation implements ConfigurationAnnotationInterface
+class Middleware extends Annotation
 {
     /**
-     * @Annotation\Required
-     *
      * @var string
      */
-    public $name;
+    public $value;
+
 
     /**
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
-        return $this->name;
+        return $this->value;
     }
 
     /**
@@ -38,6 +36,7 @@ class ApiName extends Annotation implements ConfigurationAnnotationInterface
      */
     public function getConfigKey(): string
     {
-        return ConfigurationConstants::API_NAME_CONFIG_KEY;
+        return "";
     }
+
 }

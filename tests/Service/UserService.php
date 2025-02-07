@@ -10,12 +10,20 @@ use hollisho\httpclient\Annotations\Request\Endpoint;
 use hollisho\httpclient\Annotations\Request\Headers;
 use hollisho\httpclient\Annotations\Request\Headers\AuthBasic;
 use hollisho\httpclient\Annotations\Request\Headers\CustomHeader;
+use hollisho\httpclient\Annotations\Middleware;
+use hollisho\httpclient\Annotations\Middlewares;
+use hollisho\httpclientTests\Middleware\TestMiddleware;
+use hollisho\httpclientTests\Middleware\AuthRequest;
 
 /**
  * @author Hollis
  * Interface UserService
  *
  * @BaseUrl(host="https://www.1024plus.com/")
+ * @Middlewares(middlewares={
+ *     @Middleware(value=TestMiddleware::class),
+ *     @Middleware(value=TestMiddleware::class)
+ * })
  *
  * @package hollisho\httpclientTests\Service
  */
@@ -29,7 +37,7 @@ interface UserService
      *
      * @Action(
      *     method=@Get,
-     *     endpoint=@Endpoint(uri="/api/entry/{id}")
+     *     endpoint=@Endpoint(uri="/entry_list")
      * )
      */
     public function getUser($id);
@@ -40,6 +48,11 @@ interface UserService
      *     endpoint=@Endpoint(uri="/resource"),
      *     body=@Body(json=true, name="body")
      * )
+     *
+     * @Middlewares(middlewares={
+     *     @Middleware(value=TestMiddleware::class),
+     *     @Middleware(value=AuthRequest::class)
+     * })
      */
     public function createUser($data);
 }

@@ -59,7 +59,7 @@ class CustomHeader extends Annotation implements ConfigurationAnnotationInterfac
     }
 
     /**
-     * Returns the corresponding guzzle configuration key.
+     * Returns the corresponding to guzzle configuration key.
      *
      * @return string
      */

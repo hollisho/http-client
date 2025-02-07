@@ -18,7 +18,7 @@ interface ConfigurationAnnotationInterface
     public function getValue();
 
     /**
-     * Returns the corresponding guzzle configuration key.
+     * Returns the corresponding to guzzle configuration key.
      *
      * @return string
      */

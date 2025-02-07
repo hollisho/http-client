@@ -43,6 +43,10 @@ class ConfigInterpreter
         foreach ($this->classAnnotations as $annotation) {
             $key = $annotation->getConfigKey();
 
+            if (!$key) {
+                continue;
+            }
+
             if (isset($config[$key])) {
                 $config[$key] = array_merge($config[$key], $annotation->getValue());
 

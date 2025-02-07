@@ -32,7 +32,7 @@ class BaseUrl extends Annotation implements ConfigurationAnnotationInterface
     }
 
     /**
-     * Returns the corresponding guzzle configuration key.
+     * Returns the corresponding to guzzle configuration key.
      *
      * @return string
      */

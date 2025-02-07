@@ -53,6 +53,11 @@ class AuthBasic extends Annotation implements ConfigurationAnnotationInterface
         ];
     }
 
+    /**
+     * Returns the corresponding to guzzle configuration key.
+     *
+     * @return string
+     */
     public function getConfigKey(): string
     {
         return ConfigurationConstants::AUTH_CONFIG_KEY;

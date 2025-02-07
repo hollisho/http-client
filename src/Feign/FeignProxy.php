@@ -10,9 +10,11 @@ use hollisho\httpclient\Interpreters\ConfigInterpreter;
 use hollisho\httpclient\Interpreters\MethodInterpreter;
 use hollisho\httpclient\MethodVo;
 use hollisho\objectbuilder\Exceptions\BuilderException;
+use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use hollisho\httpclient\Interpreters\MiddlewareInterpreter;
 
 /**
  * @author Hollis
@@ -44,7 +46,7 @@ class FeignProxy
      * @throws NoBodyTypeProvidedException
      * @throws BuilderException
      */
-    public function call($object, $method, $arguments)
+    public function call($object, $method, $arguments): ResponseInterface
     {
         $reflectionClass = new ReflectionClass($object);
         $classAnnotations = $this->reader->getClassAnnotations($reflectionClass);
@@ -52,8 +54,15 @@ class FeignProxy
 
         $this->client->setDefaultOptions(array_merge($this->client->getDefaultOptions(), $clientConfig));
 
+        // handle class level middleware
+        $middlewareInterpreter = new MiddlewareInterpreter($this->client);
+        $this->client = $middlewareInterpreter->interpretMiddlewares($classAnnotations);
+
         $reflectionMethod = new ReflectionMethod($object, $method);
         $annotations = $this->reader->getMethodAnnotations($reflectionMethod);
+        
+        // handle method level middleware
+        $this->client = $middlewareInterpreter->interpretMiddlewares($annotations);
 
         $methods = (new MethodInterpreter([$reflectionMethod], [$annotations], $arguments))
             ->makeMethods();
@@ -71,7 +80,6 @@ class FeignProxy
             $path,
             $methods->action->getMethod(),
             $methods->requestOptions);
-
     }
 
     /**
@@ -79,11 +87,11 @@ class FeignProxy
      * @param $params
      * @return array|mixed|string|string[]
      * @author Hollis
-     * @desc 处理url参数
+     * @desc handle url params
      */
     function generateUrlFromTemplate($template, $params)
     {
-        // 遍历参数数组，替换 URL 模板中的占位符
+        // iterate over params array, replace placeholder in url template
         foreach ($params as $key => $value) {
             if (is_array($value)) foreach ($value as $k => $v) {
                 $template = str_replace('$' . $k, $v, $template);
@@ -97,7 +105,7 @@ class FeignProxy
     }
 
     /**
-     * 设置client参数
+     * set client options
      * @param array $options
      * @return void
      * @author Hollis
