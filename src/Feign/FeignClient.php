@@ -4,7 +4,7 @@ namespace hollisho\httpclient\Feign;
 
 use GuzzleHttp\Exception\GuzzleException;
 use hollisho\httpclient\Exceptions\NoBodyTypeProvidedException;
-use hollisho\objectbuilder\Exceptions\BuilderException;
+use Psr\Http\Message\ResponseInterface;
 
 class FeignClient
 {
@@ -27,11 +27,10 @@ class FeignClient
      * 调用目标对象的方法
      * @param $name
      * @param $arguments
-     * @return mixed
+     * @return ResponseInterface
      * @throws GuzzleException
      * @throws \ReflectionException
      * @throws NoBodyTypeProvidedException
-     * @throws BuilderException
      * @author Hollis
      */
     public function __call($name, $arguments)

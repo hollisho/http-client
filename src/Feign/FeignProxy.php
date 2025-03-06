@@ -6,10 +6,9 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use GuzzleHttp\Exception\GuzzleException;
 use hollisho\httpclient\BaseClient;
 use hollisho\httpclient\Exceptions\NoBodyTypeProvidedException;
+use hollisho\httpclient\Http\RequestConfiguration;
 use hollisho\httpclient\Interpreters\ConfigInterpreter;
 use hollisho\httpclient\Interpreters\MethodInterpreter;
-use hollisho\httpclient\MethodVo;
-use hollisho\objectbuilder\Exceptions\BuilderException;
 use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 use ReflectionException;
@@ -44,7 +43,6 @@ class FeignProxy
      * @throws ReflectionException
      * @throws GuzzleException
      * @throws NoBodyTypeProvidedException
-     * @throws BuilderException
      */
     public function call($object, $method, $arguments): ResponseInterface
     {
@@ -67,19 +65,20 @@ class FeignProxy
         $methods = (new MethodInterpreter([$reflectionMethod], [$annotations], $arguments))
             ->makeMethods();
 
-        /** @var MethodVo $methods */
-        $methods = $methods[$reflectionMethod->getName()];
+        /** @var RequestConfiguration $requestConfiguration */
+        $requestConfiguration = $methods[$reflectionMethod->getName()];
 
-        $path = $methods->action->getEndpoint();
+        $path = $requestConfiguration->getAction()->getEndpoint();
+        $requestOptions = $requestConfiguration->getRequestOptions();
 
-        if (isset($methods->requestOptions['query'])) {
-            $path = $this->generateUrlFromTemplate($path, $methods->requestOptions['query']);
+        if (isset($requestOptions['query'])) {
+            $path = $this->generateUrlFromTemplate($path, $requestOptions['query']);
         }
 
         return $this->client->request(
             $path,
-            $methods->action->getMethod(),
-            $methods->requestOptions);
+            $requestConfiguration->getAction()->getMethod(),
+            $requestConfiguration->getRequestOptions());
     }
 
     /**

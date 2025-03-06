@@ -9,8 +9,7 @@ use hollisho\httpclient\Constants\BodyConstants;
 use hollisho\httpclient\Constants\ConfigurationConstants;
 use hollisho\httpclient\Constants\MethodConstants;
 use hollisho\httpclient\Exceptions\NoBodyTypeProvidedException;
-use hollisho\httpclient\MethodVo;
-use hollisho\objectbuilder\Exceptions\BuilderException;
+use hollisho\httpclient\Http\RequestConfiguration;
 use ReflectionMethod;
 use ReflectionParameter;
 
@@ -49,7 +48,7 @@ class MethodInterpreter
     }
 
     /**
-     * @throws NoBodyTypeProvidedException|BuilderException
+     * @throws NoBodyTypeProvidedException
      */
     public function makeMethods(): array
     {
@@ -92,7 +91,7 @@ class MethodInterpreter
                 $requestHeaders
             );
 
-            $methods[$reflectionMethod->getName()] = MethodVo::build([
+            $methods[$reflectionMethod->getName()] = RequestConfiguration::fromArray([
                 'action' => $action,
                 'requestOptions' => $requestOptions
             ]);
