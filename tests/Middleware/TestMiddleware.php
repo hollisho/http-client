@@ -2,7 +2,6 @@
 
 namespace hollisho\httpclientTests\Middleware;
 
-use Closure;
 use Psr\Http\Message\RequestInterface;
 
 class TestMiddleware

@@ -119,13 +119,13 @@ trait HasHttpRequests
      *
      * @param string $url
      * @param string $method
-     * @param array  $options
+     * @param array $options
      *
      * @return ResponseInterface
      *
      * @throws GuzzleException
      */
-    public function request($url, $method = 'GET', $options = []): ResponseInterface
+    public function request(string $url, string $method = 'GET', array $options = []): ResponseInterface
     {
         $method = strtoupper($method);
 

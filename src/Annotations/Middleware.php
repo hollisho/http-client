@@ -3,7 +3,6 @@
 namespace hollisho\httpclient\Annotations;
 
 use Doctrine\Common\Annotations\Annotation;
-use hollisho\httpclient\Constants\ConfigurationConstants;
 
 /**
  * Class Middleware

@@ -14,6 +14,7 @@ use hollisho\httpclient\Annotations\Middleware;
 use hollisho\httpclient\Annotations\Middlewares;
 use hollisho\httpclientTests\Middleware\TestMiddleware;
 use hollisho\httpclientTests\Middleware\AuthRequest;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Hollis
@@ -37,22 +38,28 @@ interface UserService
      *
      * @Action(
      *     method=@Get,
-     *     endpoint=@Endpoint(uri="/entry_list")
+     *     endpoint=@Endpoint(uri="/")
      * )
+     *
+     * @param $id
+     * @return ResponseInterface
      */
-    public function getUser($id);
+    public function getUser($id): ResponseInterface;
 
     /**
      * @Action(
      *     method=@Post,
      *     endpoint=@Endpoint(uri="/resource"),
-     *     body=@Body(json=true, name="body")
+     *     body=@Body(formParams=true, name="body")
      * )
      *
      * @Middlewares({
      *     @Middleware(value=TestMiddleware::class),
      *     @Middleware(value=AuthRequest::class)
      * })
+     *
+     * @param $body
+     * @return ResponseInterface
      */
-    public function createUser($data);
+    public function createUser($body): ResponseInterface;
 }

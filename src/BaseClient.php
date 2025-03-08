@@ -35,7 +35,7 @@ class BaseClient
      * @return ResponseInterface
      * @throws GuzzleException
      */
-    public function httpGet(string $url, array $query = [])
+    public function httpGet(string $url, array $query = []): ResponseInterface
     {
         return $this->request($url, 'GET', [RequestOptions::QUERY => $query]);
     }
@@ -47,7 +47,7 @@ class BaseClient
      * @return ResponseInterface
      * @throws GuzzleException
      */
-    public function httpPost(string $url, array $data = [])
+    public function httpPost(string $url, array $data = []): ResponseInterface
     {
         return $this->request($url, 'POST', [RequestOptions::FORM_PARAMS => $data]);
     }
@@ -60,7 +60,7 @@ class BaseClient
      * @return ResponseInterface
      * @throws GuzzleException
      */
-    public function httpPostJson(string $url, array $data = [], array $query = [])
+    public function httpPostJson(string $url, array $data = [], array $query = []): ResponseInterface
     {
         return $this->request($url, 'POST', [RequestOptions::QUERY => $query, RequestOptions::JSON => $data]);
     }
@@ -74,7 +74,7 @@ class BaseClient
      * @return ResponseInterface
      * @throws GuzzleException
      */
-    public function httpUpload(string $url, array $files = [], array $form = [], array $query = [])
+    public function httpUpload(string $url, array $files = [], array $form = [], array $query = []): ResponseInterface
     {
         $multipart = [];
 
