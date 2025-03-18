@@ -82,7 +82,7 @@ class MethodInterpreter
             });
 
             if ($headers !== null) {
-                $requestHeaders = $this->buildRequestHeaders($headers, $action);
+                $requestHeaders = $this->buildRequestHeaders($headers);
             }
 
             $requestOptions = array_merge(
@@ -157,12 +157,10 @@ class MethodInterpreter
      * Builds the array of request headers.
      *
      * @param Headers $headers
-     * @param Action|null $action 添加 Action 参数
      *
      * @return array
-     * @throws NoBodyTypeProvidedException
      */
-    private function buildRequestHeaders(Headers $headers, Action $action = null): array
+    private function buildRequestHeaders(Headers $headers): array
     {
         $headerBag = [];
 
@@ -173,21 +171,6 @@ class MethodInterpreter
             }
 
             $headerBag = array_merge($header->getValue(), $headerBag);
-        }
-
-        // 根据 bodyType 添加不同的 Content-Type header
-        if ($action !== null && $action->hasBody()) {
-            switch ($action->getBodyType()) {
-                case BodyConstants::JSON_BODY:
-                    $headerBag['Content-Type'] = 'application/json';
-                    break;
-                case BodyConstants::MULTI_PART_BODY:
-                    $headerBag['Content-Type'] = 'multipart/form-data';
-                    break;
-                case BodyConstants::FORM_PARAMS_BODY:
-                    $headerBag['Content-Type'] = 'application/x-www-form-urlencoded';
-                    break;
-            }
         }
 
         return [ConfigurationConstants::HEADER_CONFIG_KEY => $headerBag];
