@@ -140,7 +140,7 @@ class MethodInterpreter
 
         switch ($action->getBodyType()) {
             case BodyConstants::JSON_BODY :
-                $requestOptions['body'] = $value;
+                $requestOptions['json'] = $value;
                 break;
             case BodyConstants::MULTI_PART_BODY :
                 $requestOptions['multipart'] = $value;

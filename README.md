@@ -100,7 +100,7 @@ interface UserService
      *     body=@Body(json=true, name="body")
      * )
      */
-    public function createUser($data);
+    public function createUser($body);
 }
 
 
