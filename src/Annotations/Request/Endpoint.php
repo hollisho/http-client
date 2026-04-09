@@ -27,6 +27,6 @@ class Endpoint extends Annotation
     public function getUri(): string
     {
         // Replace placeholders with proper variables for method body.
-        return preg_replace('/({)([a-zA-Z1-9]*)(})/', '$' . '$2', $this->uri);
+        return preg_replace('/\{([a-zA-Z0-9_]+)\}/', '$$1', $this->uri);
     }
 }
