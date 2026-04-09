@@ -72,13 +72,25 @@ class FeignProxy
         $requestOptions = $requestConfiguration->getRequestOptions();
 
         if (isset($requestOptions['query'])) {
+            // Collect path param names (already converted to $varname form by Endpoint::getUri)
+            preg_match_all('/\$([a-zA-Z0-9_]+)/', $path, $matches);
+            $pathParamNames = $matches[1] ?? [];
+
             $path = $this->generateUrlFromTemplate($path, $requestOptions['query']);
+
+            // Remove path params from query to avoid them being appended as query string
+            foreach ($pathParamNames as $name) {
+                unset($requestOptions['query'][$name]);
+            }
+            if (empty($requestOptions['query'])) {
+                unset($requestOptions['query']);
+            }
         }
 
         return $this->client->request(
             $path,
             $requestConfiguration->getAction()->getMethod(),
-            $requestConfiguration->getRequestOptions());
+            $requestOptions);
     }
 
     /**
